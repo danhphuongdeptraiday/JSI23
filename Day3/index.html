@@ -4,9 +4,51 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      .card_container {
+        display: flex;
+      }
+
+      .card {
+        width: 320px;
+        min-height: 300px;
+        border: 2px solid red;
+        margin-right: 35px;
+      }
+
+      .card img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+      }
+
+      .box {
+        width: 100px;
+        height: 150px;
+        border: 2px sienna solid;
+      }
+    </style>
   </head>
   <body>
     <h1>Fetch API</h1>
+
+    <div class="card_container">
+      <!-- <div class="card">
+            <img src="https://via.placeholder.com/600/92c952" alt="" />
+            <h1 class="heading">expedita rerum eaque</h1>
+            <div id="container">
+              <b> ID: </b>
+              <span id="item_id">10</span>
+            </div>
+          </div> -->
+    </div>
+
+    <div class="box"></div>
     <script src="./app.js"></script>
   </body>
 </html>
