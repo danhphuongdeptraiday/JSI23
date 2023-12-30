@@ -1,6 +1,11 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-app.js";
 import {
+  getStorage,
+  uploadBytes,
+  getDownloadURL,
+} from "https://www.gstatic.com/firebasejs/10.1.0/firebase-storage.js";
+import {
   get,
   getDatabase,
   set,
@@ -18,6 +23,7 @@ import {
 const firebaseConfig = {
   apiKey: "AIzaSyCvMgz8-hRZc871K0Kzn7bWxY1mGSuWTtM",
   authDomain: "jsi23-login-signup.firebaseapp.com",
+  databaseURL: "https://jsi23-login-signup-default-rtdb.firebaseio.com",
   projectId: "jsi23-login-signup",
   storageBucket: "jsi23-login-signup.appspot.com",
   messagingSenderId: "669024590253",
@@ -27,7 +33,8 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const database = getDatabase();
+const storage = getStorage(app);
+const database = getDatabase(app);
 
 let user_name_input = document.getElementById("user_name");
 let user_age_input = document.getElementById("user_age");
@@ -80,4 +87,34 @@ update_btn.addEventListener("click", function () {
 // Delete
 delete_btn.addEventListener("click", function () {
   remove(ref(database, "users/" + user_name_input.value));
+});
+
+// upload image
+
+const fileInput = document.getElementById("fileInput"); // Input element for file selection
+const imageGallery = document.getElementById("imageGallery"); // Container for displaying images
+
+fileInput.addEventListener("change", async function (e) {
+  const file = e.target.files[0]; // Get the selected file
+
+  // Create a storage reference
+  const storageRef = ref(storage, "images/" + file.name);
+
+  try {
+    // Upload file to Firebase Storage
+    const snapshot = await uploadBytes(storageRef, file);
+
+    // Get the download URL after successful upload
+    const downloadURL = await getDownloadURL(snapshot.ref);
+    console.log(downloadURL);
+
+    // Store downloadURL in Firebase Database for retrieval
+    const dbImagesRef = dbRef(database, "images");
+    push(dbImagesRef, {
+      imageURL: downloadURL,
+    });
+  } catch (error) {
+    // Handle any errors while uploading
+    console.error(error);
+  }
 });
