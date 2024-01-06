@@ -4,6 +4,7 @@ import {
   getStorage,
   uploadBytes,
   getDownloadURL,
+  ref as dbRefImage,
 } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-storage.js";
 import {
   get,
@@ -98,7 +99,7 @@ fileInput.addEventListener("change", async function (e) {
   const file = e.target.files[0]; // Get the selected file
 
   // Create a storage reference
-  const storageRef = ref(storage, "images/" + file.name);
+  const storageRef = dbRefImage(storage, "images/" + file.name);
 
   try {
     // Upload file to Firebase Storage
@@ -109,7 +110,7 @@ fileInput.addEventListener("change", async function (e) {
     console.log(downloadURL);
 
     // Store downloadURL in Firebase Database for retrieval
-    const dbImagesRef = dbRef(database, "images");
+    const dbImagesRef = ref(database, "images");
     push(dbImagesRef, {
       imageURL: downloadURL,
     });
