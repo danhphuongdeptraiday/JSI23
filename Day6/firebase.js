@@ -14,6 +14,7 @@ import {
   onValue,
   update,
   remove,
+  push,
   child,
 } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-database.js";
 // TODO: Add SDKs for Firebase products that you want to use
@@ -45,7 +46,41 @@ let read_data = document.getElementById("read_data");
 let update_btn = document.getElementById("update");
 let delete_btn = document.getElementById("delete");
 
-// Create
+/////////////////////////////////////////////// upload image
+const fileInput = document.getElementById("fileInput"); // Input element for file selection
+const imageGallery = document.getElementById("imageGallery"); // Container for displaying images
+
+var imageURL = "";
+
+fileInput.addEventListener("change", async function (e) {
+  const file = e.target.files[0]; // Get the selected file
+
+  // Create a storage reference
+  const storageRef = dbRefImage(storage, "images/" + file.name);
+
+  try {
+    // Upload file to Firebase Storage
+    const snapshot = await uploadBytes(storageRef, file);
+
+    // Get the download URL after successful upload
+    const downloadURL = await getDownloadURL(snapshot.ref);
+    imageURL = downloadURL;
+    console.log(downloadURL);
+
+    // Store downloadURL in Firebase Database for retrieval
+    const dbImagesRef = ref(database, "images");
+    push(dbImagesRef, {
+      imageURL: downloadURL,
+    });
+
+    // window.location.reload();
+  } catch (error) {
+    // Handle any errors while uploading
+    console.error(error);
+  }
+});
+
+///////////////////////////////////////////// Create
 add_user_btn.addEventListener("click", function () {
   // let userRef = ref(database, "users/" + user_name_input.value);
 
@@ -60,6 +95,7 @@ add_user_btn.addEventListener("click", function () {
       set(ref(database, "users/" + user_name_input.value), {
         username: user_name_input.value,
         userage: user_age_input.value,
+        user_avatar: imageURL,
       });
 
       alert("Tạo tài khoản thành công");
@@ -70,52 +106,22 @@ add_user_btn.addEventListener("click", function () {
   });
 });
 
-// Read
+///////////////////////////////////////////////////// Read
 read_data.addEventListener("click", function () {
-  onValue(ref(database, "users"), (snap) => {
+  onValue(ref(database, `users/${user_name_input.value}`), (snap) => {
     let data = snap.val();
     console.log(data);
   });
 });
 
-// Update
+/////////////////////////////////////////////////// Update
 update_btn.addEventListener("click", function () {
   update(ref(database, "users/" + user_name_input.value), {
     userfavor: user_favor_input.value,
   });
 });
 
-// Delete
+/////////////////////////////////////////////////////// Delete
 delete_btn.addEventListener("click", function () {
   remove(ref(database, "users/" + user_name_input.value));
-});
-
-// upload image
-
-const fileInput = document.getElementById("fileInput"); // Input element for file selection
-const imageGallery = document.getElementById("imageGallery"); // Container for displaying images
-
-fileInput.addEventListener("change", async function (e) {
-  const file = e.target.files[0]; // Get the selected file
-
-  // Create a storage reference
-  const storageRef = dbRefImage(storage, "images/" + file.name);
-
-  try {
-    // Upload file to Firebase Storage
-    const snapshot = await uploadBytes(storageRef, file);
-
-    // Get the download URL after successful upload
-    const downloadURL = await getDownloadURL(snapshot.ref);
-    console.log(downloadURL);
-
-    // Store downloadURL in Firebase Database for retrieval
-    const dbImagesRef = ref(database, "images");
-    push(dbImagesRef, {
-      imageURL: downloadURL,
-    });
-  } catch (error) {
-    // Handle any errors while uploading
-    console.error(error);
-  }
 });
