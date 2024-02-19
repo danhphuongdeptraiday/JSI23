@@ -17,6 +17,12 @@ import {
   push,
   child,
 } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-database.js";
+
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "https://www.gstatic.com/firebasejs/10.5.2/firebase-auth.js";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -37,6 +43,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const storage = getStorage(app);
 const database = getDatabase(app);
+const auth = getAuth();
 
 let user_name_input = document.getElementById("user_name");
 let user_age_input = document.getElementById("user_age");
@@ -111,14 +118,25 @@ read_data.addEventListener("click", function () {
   onValue(ref(database, `users/${user_name_input.value}`), (snap) => {
     let data = snap.val();
     console.log(data);
+
+    if (data && data.user_avatar) {
+      document.getElementById(
+        "imageGallery"
+      ).style.backgroundImage = `url("${data.user_avatar}")`;
+    }
   });
 });
 
 /////////////////////////////////////////////////// Update
 update_btn.addEventListener("click", function () {
-  update(ref(database, "users/" + user_name_input.value), {
-    userfavor: user_favor_input.value,
-  });
+  if (imageURL != false) {
+    update(ref(database, "users/" + user_name_input.value), {
+      userfavor: user_favor_input.value,
+      user_avatar: imageURL,
+    });
+  } else {
+    alert("Lỗi link ảnh");
+  }
 });
 
 /////////////////////////////////////////////////////// Delete

@@ -3,15 +3,20 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Firebase study</title>
-    <style>
-      #imageGallery {
-        width: 400px;
-        height: 300px;
-      }
-    </style>
+    <title>Home</title>
   </head>
   <body>
+    <!-- hiển thị tên người vừa đăng nhập -->
+    <h1>
+      Tên của người vừa đăng nhập:
+      <span id="username_login" style="color: red">ABC</span>
+    </h1>
+    <h1>UID: <span id="userUID_login" style="color: green">000000000</span></h1>
+
+    <!-- Nút đăng xuất -->
+    <button id="logout">Logout</button>
+    <br />
+
     <input type="text" placeholder="username" id="user_name" />
     <input type="text" placeholder="userage" id="user_age" />
     <input type="text" placeholder="userfavor" id="user_favor" />
@@ -32,7 +37,6 @@
 
     <!-- Display uploaded images -->
     <div id="imageGallery"></div>
-
-    <script type="module" src="./firebase.js"></script>
+    <script type="module" src="./home.js"></script>
   </body>
 </html>

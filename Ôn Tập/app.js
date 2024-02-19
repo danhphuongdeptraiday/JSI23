@@ -66,3 +66,18 @@
 // enter_name(); // <=> "Hello My Friends"
 
 // console.log("Text = " + enter_name("Phương"));
+
+// Regular expressions to check for at least one uppercase, one lowercase, and one special character
+let str = "Phuong@";
+
+const uppercaseRegex = /[A-Z]/;
+const lowercaseRegex = /[a-z]/;
+const specialCharRegex = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
+
+// Check if the string satisfies all conditions
+const hasUppercase = uppercaseRegex.test(str);
+console.log(hasUppercase);
+const hasLowercase = lowercaseRegex.test(str);
+console.log(hasLowercase);
+const hasSpecialChar = specialCharRegex.test(str);
+console.log(hasSpecialChar);
