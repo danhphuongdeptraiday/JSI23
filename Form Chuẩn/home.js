@@ -133,7 +133,6 @@ add_user_btn.addEventListener("click", function () {
       alert("Tạo tài khoản thành công");
     } else {
       alert("Tên này đã được sử dụng, vui lòng nhập tên khác");
-      // alert(snapshot.val());
     }
   });
 });
@@ -142,26 +141,15 @@ add_user_btn.addEventListener("click", function () {
 read_data.addEventListener("click", function () {
   onValue(ref(database, `users/${userUID_login}`), (snap) => {
     let data = snap.val();
-    console.log(data.user_score);
-
-    // if (data && data.user_avatar) {
-    //   document.getElementById(
-    //     "imageGallery"
-    //   ).style.backgroundImage = `url("${data.user_avatar}")`;
-    // }
+    console.log(data);
   });
 });
 
 /////////////////////////////////////////////////// Update
 update_btn.addEventListener("click", function () {
-  //   if (imageURL != false) {
   update(ref(database, "users/" + userUID_login), {
     user_score: user_favor_input.value,
-    //   user_avatar: imageURL,
   });
-  //   } else {
-  //     alert("Lỗi link ảnh");
-  //   }
 });
 
 /////////////////////////////////////////////////////// Delete
