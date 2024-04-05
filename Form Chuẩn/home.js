@@ -40,8 +40,8 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const storage = getStorage(app);
 const database = getDatabase(app);
+const storage = getStorage(app);
 const auth = getAuth();
 
 let user_name_input = document.getElementById("user_name");
@@ -119,14 +119,15 @@ add_user_btn.addEventListener("click", function () {
 
   const dbRef = ref(getDatabase());
 
-  get(child(dbRef, `users/${userUID_login}`)).then((snapshot) => {
+  get(child(dbRef, `student/first_student`)).then((snapshot) => {
     // nếu tên người dùng bạn nhập trùng với tên có rồi trong firebase thì snap.exists() == true
     // => Lúc này mình thể add 1 user có tên như vậy nữa
     // nếu tên người dùng bạn nhập trùng ko với tên có rồi trong firebase thì snap.exists() == false
     // => Cho phép user đó đc add vào trong firebase
     if (snapshot.exists() == false) {
-      set(ref(database, "users/" + userUID_login), {
+      set(ref(database, "student/first_student"), {
         userage: user_age_input.value,
+        usefavor: ["Ăn", "Ngủ", "Nghỉ"],
         // user_avatar: imageURL,
       });
 
@@ -139,16 +140,19 @@ add_user_btn.addEventListener("click", function () {
 
 ///////////////////////////////////////////////////// Read
 read_data.addEventListener("click", function () {
-  onValue(ref(database, `users/${userUID_login}`), (snap) => {
+  onValue(ref(database, `student/first_student`), (snap) => {
     let data = snap.val();
     console.log(data);
   });
 });
 
 /////////////////////////////////////////////////// Update
+// arrayComment.push(djkfnsdkjfns);
 update_btn.addEventListener("click", function () {
-  update(ref(database, "users/" + userUID_login), {
-    user_score: user_favor_input.value,
+  update(ref(database, "student/first_student"), {
+    userage: user_age_input.value,
+    usefavor: ["Ăn", "Ngủ", "Nghỉ"],
+    // user_avatar: imageURL,
   });
 });
 

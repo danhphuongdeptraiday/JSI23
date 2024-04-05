@@ -2,12 +2,7 @@
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js";
-import {
-  getStorage,
-  uploadBytes,
-  getDownloadURL,
-  ref as dbRefImage,
-} from "https://www.gstatic.com/firebasejs/10.5.2/firebase-storage.js";
+
 import {
   get,
   getDatabase,
@@ -42,7 +37,6 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const storage = getStorage(app);
 const database = getDatabase(app);
 const auth = getAuth();
 
@@ -59,7 +53,7 @@ register_btn.addEventListener("click", function () {
   let username = username_register.value;
   let password = password_register.value;
 
-  createUserWithEmailAndPassword(auth, username, password)
+  createUserWithEmailAndPassword(auth, username, password) // Check xem cái user này tồn tại chưa
     .then((userCredential) => {
       const user = userCredential.user;
       set(ref(database, "users/" + user.uid), {
@@ -89,18 +83,14 @@ login_btn.addEventListener("click", function () {
       update(ref(database, "users/" + user.uid), {
         lastLogin: date,
       });
-
-      //   Đoạn này anh lưu 2 thông tin quan trong nhất của 1 user khi đăng nhập thành công đó là username và user uid
-      localStorage.setItem("username_login", username);
-      localStorage.setItem("userUID_login", user.uid);
-
-      // Sau khi đăng nhập thành công xong có thể sử chuyển đối sang 1 trang khác
-      alert("Đăng nhập thành công");
-
-      setTimeout(() => {
-        // ở đây a chuyển sang trang home để làm mẫu CRUD cho các em
-        window.location.href = "./home.html";
-      }, 2000);
+    })
+    .then(() => {
+      if (username == "admin@gmail.com") {
+        window.location.href = "admin.html";
+      } else {
+        alert("Đăng nhập thành công");
+        window.location.href = "home.html";
+      }
     })
     .catch((err) => {
       const errorCode = err.code;
