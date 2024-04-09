@@ -81,6 +81,28 @@
         padding: 10px;
         margin-top: 20px;
       }
+
+      .all_course {
+        display: flex;
+        width: 100%;
+        border: 2px solid red;
+        min-height: 200px;
+      }
+
+      .all_course .product {
+        margin: 10px;
+        position: relative;
+      }
+
+      .all_course .product .edit {
+        position: absolute;
+        right: 0px;
+      }
+
+      .all_course .product .delete {
+        position: absolute;
+        right: 40px;
+      }
     </style>
   </head>
   <body>
@@ -110,7 +132,7 @@
         <input type="text" placeholder="Mô tả" id="product_detail_update" />
 
         <br />
-        <button id="create_course" style="margin-top: 20px">Update</button>
+        <button id="create_course" style="margin-top: 20px">Create</button>
         <button id="save">Save</button>
       </div>
 
@@ -120,6 +142,28 @@
         <div class="product_price">
           <span>999.000</span>
           <span>VND</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- read -->
+    <div class="read">
+      <button id="read_full_course">Read all course</button>
+
+      <!-- all course -->
+      <div class="all_course">
+        <div class="product">
+          <!-- edit -->
+          <button class="edit">Edit</button>
+          <!-- delete -->
+          <button class="delete">Delete</button>
+
+          <img src="" alt="" />
+          <div class="product_name">Tên sản phẩm</div>
+          <div class="product_price">
+            <span>999.000</span>
+            <span>VND</span>
+          </div>
         </div>
       </div>
     </div>

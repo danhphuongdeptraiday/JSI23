@@ -14,12 +14,13 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.2/firebas
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyBUVfVNg4itOtdvTb61kYp_k52dHEr5NL4",
-  authDomain: "jsi27-8a433.firebaseapp.com",
-  projectId: "jsi27-8a433",
-  storageBucket: "jsi27-8a433.appspot.com",
-  messagingSenderId: "766232863780",
-  appId: "1:766232863780:web:8d232e2f2292b53eab24b1",
+  apiKey: "AIzaSyCSYnEdrRTEEFFhuWX-PcFgljEBL_G-xuE",
+  authDomain: "jsi28-fe47b.firebaseapp.com",
+  databaseURL: "https://jsi28-fe47b-default-rtdb.firebaseio.com",
+  projectId: "jsi28-fe47b",
+  storageBucket: "jsi28-fe47b.appspot.com",
+  messagingSenderId: "814956298867",
+  appId: "1:814956298867:web:35dbfb58ff2c4e12316006",
 };
 
 const app = initializeApp(firebaseConfig);
@@ -86,3 +87,44 @@ save_btn.addEventListener("click", function () {
     alert("Bạn đang điền thiếu thông tin vui lòng nhập lại");
   }
 });
+
+// Code buổi 13
+let read_full_course = document.getElementById("read_full_course");
+read_full_course.addEventListener("click", function () {
+  onValue(ref(database, "All_Products"), (snap) => {
+    let data = snap.val();
+    data = Object.values(data);
+    console.log(data);
+    localStorage.setItem("course_data_admin", JSON.stringify(data));
+  });
+
+  let data = JSON.parse(localStorage.getItem("course_data_admin"));
+  render_course_admin(data);
+});
+
+let all_course = document.querySelector(".all_course");
+function render_course_admin(courses) {
+  for (let i = 0; i < courses.length; i++) {
+    let div = document.createElement("div");
+    div.className = "product";
+
+    div.innerHTML = `
+      <button class="edit">Edit</button>
+      <img src="${courses[i].product_image}" alt="" />
+      <div class="product_name">${courses[i].product_name}</div>
+      <div class="product_price">
+        <span>${courses[i].product_price}</span>
+        <span>VND</span>
+      </div>
+      `;
+
+    all_course.appendChild(div);
+  }
+
+  let list_edit_btn = document.querySelectorAll(".all_course .product .edit");
+  for (let i = 0; i < list_edit_btn.length; i++) {
+    list_edit_btn[i].addEventListener("click", () => {
+      console.log("hello");
+    });
+  }
+}
