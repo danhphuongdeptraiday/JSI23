@@ -34,6 +34,16 @@ let input_product_image = document.getElementById("product_image_update");
 let input_product_detail = document.getElementById("product_detail_update");
 let save_btn = document.getElementById("save");
 let product_interface = document.querySelector(".product");
+let show_edit = document.querySelector(".show_edit");
+show_edit.style.display = "none";
+
+// input edit
+let update_name = document.getElementById("update_name");
+let update_price = document.getElementById("update_price");
+let update_image = document.getElementById("update_img");
+let update_details = document.getElementById("update_details");
+let save_edit = document.querySelector(".show_edit button");
+let name_edit = document.getElementById("name_edit");
 
 ///////////////////////////////////////////// Create
 create_course.addEventListener("click", function () {
@@ -110,6 +120,8 @@ function render_course_admin(courses) {
 
     div.innerHTML = `
       <button class="edit">Edit</button>
+      <button class="delete">Delete</button>
+
       <img src="${courses[i].product_image}" alt="" />
       <div class="product_name">${courses[i].product_name}</div>
       <div class="product_price">
@@ -122,9 +134,28 @@ function render_course_admin(courses) {
   }
 
   let list_edit_btn = document.querySelectorAll(".all_course .product .edit");
+
   for (let i = 0; i < list_edit_btn.length; i++) {
     list_edit_btn[i].addEventListener("click", () => {
-      console.log("hello");
+      if (show_edit.style.display == "none") {
+        name_edit.innerText = courses[i].product_name;
+        show_edit.style.display = "block";
+      } else {
+        show_edit.style.display = "none";
+      }
     });
   }
 }
+
+// Save Edit
+save_edit.addEventListener("click", function () {
+  console.log(name_edit);
+  update(ref(database, `All_Products/${name_edit.innerText}`), {
+    product_name: update_name.value,
+    product_price: update_price.value,
+    product_image: update_image.value,
+    product_details: update_details.value,
+  }).then(() => {
+    alert("update thành công");
+  });
+});
